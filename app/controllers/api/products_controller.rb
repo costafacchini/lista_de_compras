@@ -1,4 +1,6 @@
 class Api::ProductsController < ApplicationController
+  protect_from_forgery except: [:create, :update, :destroy]
+
   def index
     render json: Product.all
   end

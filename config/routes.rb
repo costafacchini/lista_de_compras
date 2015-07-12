@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :products
-    resources :lists
+    resources :products, except: [:new, :edit]
+    resources :lists, except: [:new, :edit]
   end
 end

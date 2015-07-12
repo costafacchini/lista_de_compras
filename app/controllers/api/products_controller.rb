@@ -1,22 +1,21 @@
 class Api::ProductsController < ApplicationController
-  protect_from_forgery except: [:create, :update, :destroy]
-
   def index
     render json: Product.all
   end
 
-  def new
-    render json: Product.new
-  end
-
   def show
-    render json: Product.find(params[:id])
+    product = Product.find_by_id(params[:id])
+    if product
+      render json: product
+    else
+      render nothing: true, status: :no_content
+    end
   end
 
   def create
     product = Product.new(filtered_params)
 
-    if products.save
+    if product.save
       render json: product, status: :created
     else
       render json: product.errors, status: :unprocessable_entity
@@ -24,7 +23,7 @@ class Api::ProductsController < ApplicationController
   end
 
   def update
-    product = Product.params(params[:id])
+    product = Product.find(params[:id])
 
     if product.update(filtered_params)
       render json: product
@@ -34,7 +33,7 @@ class Api::ProductsController < ApplicationController
   end
 
   def destroy
-    product = Product.params(params[:id])
+    product = Product.find(params[:id])
 
     if product.destroy
       render json: product

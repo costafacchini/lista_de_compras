@@ -5,12 +5,13 @@ class Api::ListsController < ApplicationController
     render json: List.all, each_serializer: ListPreviewSerializer
   end
 
-  def new
-    render json: List.new
-  end
-
   def show
-    render json: List.find(params[:id])
+    list = List.find_by_id(params[:id])
+    if list
+      render json: list
+    else
+      render nothing: true, status: :no_content
+    end
   end
 
   def create
@@ -24,7 +25,7 @@ class Api::ListsController < ApplicationController
   end
 
   def update
-    list = List.params(params[:id])
+    list = List.find(params[:id])
 
     if list.update(filtered_params)
       render json: list
@@ -34,7 +35,7 @@ class Api::ListsController < ApplicationController
   end
 
   def destroy
-    list = List.params(params[:id])
+    list = List.find(params[:id])
 
     if list.destroy
       render json: list
@@ -46,6 +47,6 @@ class Api::ListsController < ApplicationController
   private
 
   def filtered_params
-    params.require(:list).permit(:name, list_items_attributes[:id, :list_id, :product_id, :quantity, :_destroy])
+    params.require(:list).permit(:name, list_items_attributes: [:id, :list_id, :product_id, :quantity, :_destroy])
   end
 end

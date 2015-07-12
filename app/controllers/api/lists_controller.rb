@@ -1,4 +1,4 @@
-class Api::ListController < ApplicationController
+class Api::ListsController < ApplicationController
   protect_from_forgery except: [:create, :update, :destroy]
 
   def index

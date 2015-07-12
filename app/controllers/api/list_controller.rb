@@ -2,7 +2,7 @@ class Api::ListController < ApplicationController
   protect_from_forgery except: [:create, :update, :destroy]
 
   def index
-    render json: List.all
+    render json: List.all, each_serializer: ListPreviewSerializer
   end
 
   def new

@@ -1,26 +1,20 @@
 require "rails_helper"
 
 describe ListSerializer do
-  let(:product) { Product.new(id: 1, name: "Arroz") }
-
-  let(:list) do
-    list = List.new(id: 123, name: "Mercado")
-    list.list_items.build(id: 123, quantity: 2, product: product)
-    list
-  end
+  let(:list) { build(:list, :complete, id: 1) }
 
   subject { described_class.new list }
 
   it "creates special JSON for the API" do
     expected = {
       list: {
-        id: 123,
+        id: 1,
         name: "Mercado",
         list_items: [{
-          id: 123,
-          quantity: 2,
+          id: list.list_items.first.id,
+          quantity: 1,
           product: {
-            id: 1,
+            id: list.list_items.first.product.id,
             name: "Arroz"
           }
         }]

@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe Api::ListsController, type: :controller do
   describe "GET #index" do
-    let!(:sabao) { List.create(name: "Mercado") }
-    let!(:arroz) { List.create(name: "Farmácia") }
+    let!(:mercado) { create :list, name: "Mercado" }
+    let!(:farmacia) { create :list, name: "Farmácia" }
 
     before { get :index }
 
@@ -12,7 +12,7 @@ RSpec.describe Api::ListsController, type: :controller do
     end
 
     it "renders the JSON" do
-      expected = ActiveModel::ArraySerializer.new([sabao, arroz],
+      expected = ActiveModel::ArraySerializer.new([mercado, farmacia],
         each_serializer: ListPreviewSerializer, root: "lists").to_json
 
       expect(response.body).to eq expected
@@ -21,7 +21,7 @@ RSpec.describe Api::ListsController, type: :controller do
 
   describe "GET #show" do
     context "valid params" do
-      let(:list) { List.create(name: "Mercado") }
+      let(:list) { create :list }
       before { get :show, id: list }
 
       it "responds successfully with an HTTP 200 status code" do
@@ -82,7 +82,7 @@ RSpec.describe Api::ListsController, type: :controller do
   end
 
   describe "PATCH #update" do
-    let!(:list) { List.create(name: "Mercado") }
+    let!(:list) { create :list }
 
     context "valid params" do
       before { patch :update, id: list, list: { name: "Farmácia" } }
@@ -121,7 +121,7 @@ RSpec.describe Api::ListsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let!(:list) { List.create(name: "Mercado") }
+    let!(:list) { create :list }
     let(:destroy_list!) { delete :destroy, id: list }
 
     context "valid params" do
@@ -144,7 +144,7 @@ RSpec.describe Api::ListsController, type: :controller do
     end
 
     context "invalid params" do
-      let!(:list) { List.new(id: 1) }
+      let!(:list) { build :list, id: 1, name: nil }
 
       before do
         list.valid?

@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.describe Api::ProductsController, type: :controller do
   describe "GET #index" do
-    let!(:sabao) { Product.create(name: "Sabão") }
-    let!(:arroz) { Product.create(name: "Arroz") }
+    let!(:arroz) { create :product, name: "Arroz" }
+    let!(:sabao) { create :product, name: "Sabão" }
 
     before { get :index }
 
@@ -12,7 +12,7 @@ RSpec.describe Api::ProductsController, type: :controller do
     end
 
     it "renders the JSON" do
-      expected = ActiveModel::ArraySerializer.new([sabao, arroz],
+      expected = ActiveModel::ArraySerializer.new([arroz, sabao],
         each_serializer: ProductSerializer, root: "products").to_json
 
       expect(response.body).to eq expected
@@ -21,7 +21,7 @@ RSpec.describe Api::ProductsController, type: :controller do
 
   describe "GET #show" do
     context "valid params" do
-      let(:product) { Product.create(name: "Sabão") }
+      let(:product) { create :product }
       before { get :show, id: product }
 
       it "responds successfully with an HTTP 200 status code" do
@@ -79,7 +79,7 @@ RSpec.describe Api::ProductsController, type: :controller do
   end
 
   describe "PATCH #update" do
-    let!(:product) { Product.create(name: "Sabão") }
+    let!(:product) { create :product, name: "Sabão" }
 
     context "valid params" do
       before { patch :update, id: product, product: { name: "Arroz" } }
@@ -114,7 +114,7 @@ RSpec.describe Api::ProductsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let!(:product) { Product.create(name: "Sabão") }
+    let!(:product) { create :product }
     let(:destroy_product!) { delete :destroy, id: product }
 
     context "valid params" do
@@ -137,11 +137,8 @@ RSpec.describe Api::ProductsController, type: :controller do
     end
 
     context "invalid params" do
-      let!(:list) { List.create(name: "Mercado") }
-      before do
-        ListItem.create(product: product, list: list)
-        destroy_product!
-      end
+      let!(:list_item) { create :list_item, product: product }
+      before { destroy_product! }
 
       it "responds successfully with an HTTP 422 status code" do
         expect(response).to have_http_status 422

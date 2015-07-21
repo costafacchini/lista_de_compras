@@ -47,6 +47,7 @@ class Api::ListsController < ApplicationController
   private
 
   def filtered_params
-    params.require(:list).permit(:name, list_items_attributes: [:id, :list_id, :product_id, :quantity, :_destroy])
+    params.require(:list).permit(:name, list_items_attributes: [
+      :id, :list_id, :product_id, :quantity, :_destroy])
   end
 end

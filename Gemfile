@@ -12,6 +12,7 @@ group :development, :test do
   gem 'byebug'
   gem "factory_girl_rails", "4.4.0"
   gem 'rspec-rails', '~> 3.0'
+  gem 'rubocop',  '0.30.1', require: false
   gem 'shoulda-matchers', '2.8.0'
   gem 'spring'
   gem 'web-console', '~> 2.0'

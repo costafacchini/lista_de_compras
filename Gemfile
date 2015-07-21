@@ -10,6 +10,7 @@ gem 'simplecov', require: false, group: :test
 
 group :development, :test do
   gem 'byebug'
+  gem 'codeclimate-test-reporter'
   gem "factory_girl_rails", "4.4.0"
   gem 'rspec-rails', '~> 3.0'
   gem 'rubocop',  '0.30.1', require: false

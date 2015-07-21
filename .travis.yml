@@ -4,3 +4,6 @@ rvm:
 script:
   - bundle exec rubocop
   - bundle exec rspec
+addons:
+  code_climate:
+    repo_token: 27374d170c61a4648c29d4b22f7365b16f06d01f360507705fb66bd896a3bd47
